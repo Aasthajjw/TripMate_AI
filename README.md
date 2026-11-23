@@ -1,127 +1,224 @@
-# ✈️ TripMate AI — A Multi-Agent Travel Planner with LangGraph
+# ✈️ TripMate AI – Multi-Agent Travel Planner
 
-An open-source AI travel planner that turns a natural-language trip request into a practical travel plan with flight suggestions, hotel ideas, and a day-by-day itinerary. The project uses a multi-agent workflow built with LangGraph, LangChain, and FastAPI.
+An AI-powered travel planning application built using **LangGraph, LangChain, Groq, and FastAPI**. TripMate AI uses a multi-agent architecture to simplify travel planning by coordinating specialized AI agents for flight research, hotel recommendations, and personalized itinerary generation.
 
-## Why this project?
+## 🌍 Project Overview
 
-Planning a trip usually means jumping between multiple websites, tools, and spreadsheets. This project brings that flow into one experience by combining:
+Planning a trip involves researching flights, comparing hotels, creating itineraries, and organizing travel information. TripMate AI simplifies this process through an intelligent multi-agent system.
 
-- a flight-search agent,
-- a hotel-research agent,
-- an itinerary-planning agent, and
-- a final response agent,
+Users can enter their travel requirements, and the application coordinates multiple AI agents to generate a comprehensive travel plan.
 
-all coordinated through a LangGraph workflow.
+## ✨ Key Features
 
-## Features
+- **AI-Powered Travel Planning:** Generates personalized travel plans based on user requirements.
+- **Flight Research Agent:** Retrieves flight-related information using AviationStack.
+- **Hotel Research Agent:** Uses Tavily search to research hotel options and accommodation information.
+- **Itinerary Generation Agent:** Creates structured, day-wise travel itineraries.
+- **Multi-Agent Coordination:** Uses LangGraph to manage communication and workflow between specialized agents.
+- **AI-Powered Responses:** Uses Groq LLMs for intelligent reasoning and natural-language generation.
+- **Interactive Web Interface:** Provides a user-friendly interface for submitting travel requests and viewing generated plans.
+- **Conversation Persistence:** Uses PostgreSQL for storing LangGraph conversation checkpoints.
 
-- ✈️ Flight research using AviationStack
-- 🏨 Hotel suggestions using Tavily search
-- 🧠 Multi-agent orchestration with LangGraph
-- 📝 Structured travel itinerary generation
-- 🌐 FastAPI backend with a simple web interface
-- 💾 Conversation state persistence using PostgreSQL
-- ⚡ LLM-powered responses with Groq
+## 🏗️ System Architecture
 
-## Tech Stack
-
-- Python 3.10+
-- FastAPI
-- Jinja2 + HTML/CSS/JavaScript frontend
-- LangGraph
-- LangChain
-- Groq LLMs
-- PostgreSQL
-- Tavily API
-- AviationStack API
-
-## Project Structure
+TripMate AI follows a multi-agent architecture where each agent performs a specialized task.
 
 ```text
-.
-├── app.py                # FastAPI app entry point
-├── backend.py            # LangGraph travel workflow
-├── requirements.txt      # Python dependencies
-├── static/               # Static frontend assets
-├── templates/            # HTML templates
-└── tools/                # Flight and web search integrations
+             USER INPUT
+                  |
+                  v
+          FASTAPI BACKEND
+                  |
+                  v
+          LANGGRAPH WORKFLOW
+                  |
+       +----------+----------+
+       |          |          |
+       v          v          v
+   FLIGHT       HOTEL     ITINERARY
+   AGENT        AGENT       AGENT
+       |          |          |
+       v          v          v
+  AviationStack Tavily    Groq LLM
+       |          |          |
+       +----------+----------+
+                  |
+                  v
+         FINAL RESPONSE AGENT
+                  |
+                  v
+          COMPLETE TRAVEL PLAN
 ```
 
-## Prerequisites
+### AI Agents
 
-Before running the project locally, make sure you have:
+| Agent | Responsibility |
+|---|---|
+| Flight Agent | Retrieves flight-related information |
+| Hotel Agent | Researches hotels and accommodation |
+| Itinerary Agent | Generates personalized travel itineraries |
+| Final Response Agent | Combines agent outputs into a structured response |
 
-- Python 3.10 or newer installed
-- PostgreSQL running and accessible
-- API keys for:
-  - Groq
-  - Tavily
-  - AviationStack
+## 🛠️ Technology Stack
 
-## Environment Variables
+| Category | Technologies |
+|---|---|
+| Programming Language | Python |
+| Backend | FastAPI |
+| AI Orchestration | LangGraph |
+| LLM Framework | LangChain |
+| Language Model | Groq |
+| Web Search | Tavily API |
+| Flight Information | AviationStack API |
+| Database | PostgreSQL |
+| Frontend | HTML, CSS, JavaScript |
+| Version Control | Git & GitHub |
 
-Create a .env file in the project root with the following variables:
+## 📁 Project Structure
 
-```env
-DATABASE_URL=postgresql://user:password@localhost:5432/travel_db
-GROQ_API_KEY=your_groq_api_key
-AVIATIONSTACK_API_KEY=your_aviationstack_api_key
-TAVILY_API_KEY=your_tavily_api_key
-DEFAULT_ORIGIN_IATA=DAC
+```text
+TripMate-AI/
+│
+├── app.py
+├── backend.py
+├── requirements.txt
+├── .env
+├── .gitignore
+│
+├── static/
+│   ├── style.css
+│   └── script.js
+│
+├── templates/
+│   └── index.html
+│
+└── README.md
 ```
 
-## Installation
+*Note: The structure above illustrates the main application files. Additional project files and folders may be present.*
+
+## ⚙️ Installation and Setup
+
+Follow these steps to run TripMate AI locally.
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/YOUR_USERNAME/TripMate-AI.git
+```
+
+Navigate to the project directory:
+
+```bash
+cd TripMate-AI
+```
+
+### 2. Create a Virtual Environment
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate   # On Windows: .venv\Scripts\activate
-pip install -r requirements.txt
 ```
 
-## Running the App
+Activate it on Windows:
 
-Start the FastAPI server:
+```powershell
+.venv\Scripts\Activate.ps1
+```
+
+### 3. Install Dependencies
+
+```bash
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+pip install certifi
+```
+
+### 4. Configure Environment Variables
+
+Create a `.env` file in the root directory and add the following credentials:
+
+```env
+GROQ_API_KEY=your_groq_api_key
+
+TAVILY_API_KEY=your_tavily_api_key
+
+AVIATIONSTACK_API_KEY=your_aviationstack_api_key
+
+DATABASE_URL=your_postgresql_database_url
+
+DEFAULT_ORIGIN_IATA=CCU
+```
+
+Replace the placeholders with your actual API keys and database connection URL.
+
+### 5. Run the Application
+
+Start the FastAPI application:
 
 ```bash
 python app.py
 ```
 
-Then open your browser at:
+Open your browser and navigate to:
 
 ```text
-http://127.0.0.1:8000/
+http://127.0.0.1:8000
 ```
 
-## API Endpoints
+The application should now be accessible locally.
 
-- GET /health - Health check
-- POST /api/travel - Submit a travel request
+## 🔑 Required API Services
 
-Example request:
+The project integrates the following external services:
 
-```bash
-curl -X POST http://127.0.0.1:8000/api/travel \
-  -H "Content-Type: application/json" \
-  -d '{"message":"Plan a 3-day trip to Tokyo with a budget of $1200"}'
-```
+| Service | Purpose | Official Website |
+|---|---|---|
+| Groq | LLM inference and AI responses | https://console.groq.com/ |
+| Tavily | Web search and hotel research | https://app.tavily.com/ |
+| AviationStack | Flight information | https://aviationstack.com/ |
+| Render PostgreSQL | Persistent database | https://render.com/ |
 
-## How the Workflow Works
+**Important:** API keys and database credentials must be kept private. Never commit your `.env` file to GitHub.
 
-1. The user submits a travel request.
-2. The flight agent gathers flight-related information.
-3. The hotel agent searches for accommodation suggestions.
-4. The itinerary agent creates a practical travel plan.
-5. The final agent formats the result into a polished response.
+## 🗄️ Database
 
-## Contributing
+TripMate AI uses PostgreSQL to persist LangGraph conversation checkpoints.
 
-Contributions are welcome. If you want to improve the app, add new travel features, or fix issues:
+Configure the `DATABASE_URL` environment variable with a valid PostgreSQL connection string before starting the application.
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Open a pull request
+## ⚠️ Important Notes
 
-## Acknowledgments
+- An active internet connection is required for external API integrations.
+- API usage is subject to the respective provider's rate limits and subscription plans.
+- AviationStack provides flight-related information; it does not independently guarantee real-time ticket prices or booking availability.
+- AI-generated itineraries and recommendations should be verified before making actual travel arrangements.
+- The application requires valid API credentials and a working PostgreSQL connection.
 
-This project is built with the help of modern LLM tooling and travel APIs, and it is intended as a practical example of combining LangGraph agents with real-world applications.
+## 🚀 Future Enhancements
+
+Potential improvements include:
+
+- Integration with additional flight and hotel booking APIs.
+- Real-time flight fare comparison.
+- Interactive maps and location-based recommendations.
+- Personalized travel budgets and expense tracking.
+- User authentication and profile management.
+- PDF export of generated itineraries.
+- Weather-based travel recommendations.
+- Deployment with scalable cloud infrastructure.
+
+## 👩‍💻 Author
+
+**Aastha Jhunjhunwala**
+
+B.Tech (Hons.) – Aerospace Engineering
+
+Interested in Artificial Intelligence, Machine Learning, and Multi-Agent Systems.
+
+## 📄 License
+
+This project is intended for educational and development purposes. Refer to the original repository's license and attribution requirements before redistributing or modifying its code.
+
+---
+
+⭐ If you find this project interesting, consider starring the repository!
